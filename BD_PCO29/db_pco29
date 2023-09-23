@@ -1,0 +1,819 @@
+/* Lógico_pco29_ v1.1_2023.08.14 : */
+
+CREATE TABLE Tb_Pesso (
+    co_pesso INT PRIMARY KEY,
+    no_socia varchar(150),
+    fk_Tb_Conta_co_cont INT
+);
+
+CREATE TABLE Tb_Fisic (
+    nu_cpf CHAR(11),
+    co_fisic INT,
+    no_preno varchar(50),
+    no_sobre varchar(150),
+    no_agno varchar(50),
+    im_foto bit,
+    fk_Pesso_co_pesso INT,
+    fk_DPess_co_dpess INT,
+    fk_StPol_co_stpol INT,
+    PRIMARY KEY (co_fisic, fk_Pesso_co_pesso)
+);
+
+CREATE TABLE Tb_Jurid (
+    nu_cnpj CHAR(14),
+    co_jurid INT,
+    no_emp varchar(150),
+    no_unid varchar(100),
+    fk_Pesso_co_pesso INT,
+    PRIMARY KEY (co_jurid, fk_Pesso_co_pesso)
+);
+
+CREATE TABLE Tb_OPart (
+    co_opart INT,
+    fk_Tb_Jurid_co_jurid INT,
+    fk_Tb_Jurid_fk_Pesso_co_pesso INT,
+    fk_Tb_Hiera_co_hiera INT,
+    PRIMARY KEY (co_opart, fk_Tb_Jurid_co_jurid, fk_Tb_Jurid_fk_Pesso_co_pesso)
+);
+
+CREATE TABLE Tb_Comer (
+    co_comer INT,
+    fk_Tb_Jurid_co_jurid INT,
+    fk_Tb_Jurid_fk_Tb_Pesso_co_pesso INT,
+    PRIMARY KEY (co_comer, fk_Tb_Jurid_co_jurid, fk_Tb_Jurid_fk_Tb_Pesso_co_pesso)
+);
+
+CREATE TABLE Tb_Candi (
+    co_cand INT,
+    dt_cand date,
+    no_cand varchar(150),
+    nu_cand varchar(5),
+    nu_preg char(17),
+    nu_ppcont char(17),
+    fk_Tb_Jurid_co_jurid INT,
+    fk_Tb_Jurid_fk_Tb_Pesso_co_pesso INT,
+    fk_Tb_Cargo_co_cargo smallint,
+    fk_Tb_Eleic_co_eleic INT,
+    fk_Tb_StCan_co_stcand INT,
+    PRIMARY KEY (co_cand, fk_Tb_Jurid_co_jurid, fk_Tb_Jurid_fk_Tb_Pesso_co_pesso)
+);
+
+CREATE TABLE Tb_Repre (
+    co_repre INT PRIMARY KEY,
+    dt_posse date,
+    vl_virg Interval,
+    st_repre boolean,
+    fk_Tb_Jurid_co_jurid INT,
+    fk_Tb_Jurid_fk_Tb_Pesso_co_pesso INT
+);
+
+CREATE TABLE Tb_Conta (
+    co_conta INT PRIMARY KEY,
+    dt_cadas date,
+    dt_atual date
+);
+
+CREATE TABLE Tb_Email (
+    co_email INT PRIMARY KEY,
+    no_email varchar(150),
+    fk_Tb_TpEma_co_tpema INT
+);
+
+CREATE TABLE Tb_TpEma (
+    co_tpema INT PRIMARY KEY,
+    no_tpema varchar(100),
+    ds_tpema varchar(100)
+);
+
+CREATE TABLE Tb_Ender (
+    co_ender INT PRIMARY KEY,
+    no_bairr varchar(70),
+    nu_lote varchar(10),
+    ds_compl varchar,
+    fk_Tb_Logra_co_logra INT,
+    fk_Tb_CEP_nu_cep CHAR(8),
+    fk_Tb_Munic_fk_Tb_UF_fk_Tb_Macro_co_macro char(1),
+    fk_Tb_Munic_fk_Tb_UF_co_uf char(1),
+    fk_Tb_Munic_co_munic char(5),
+    fk_Tb_UF_co_uf char(1),
+    fk_Tb_Pais_co_pais char(3),
+    fk_Tb_UF_fk_Tb_Macro_co_macro char(1)
+);
+
+CREATE TABLE Tb_Telef (
+    co_tel INT PRIMARY KEY,
+    nu_ddi varchar(3),
+    nu_ddd char(2),
+    nu_tel varchar(9),
+    nu_ramal varchar(4),
+    fk_Tb_TpTel_co_tptel INT
+);
+
+CREATE TABLE Tb_TpTel (
+    co_tptel INT PRIMARY KEY,
+    nu_tptel varchar(70),
+    ds_tptel varchar(200)
+);
+
+CREATE TABLE Tb_UF (
+    fk_Tb_Pais_co_pais char(3),
+    fk_Tb_Macro_co_macro char(1),
+    co_uf char(1),
+    no_uf varchar(50),
+    sg_uf char(2),
+    PRIMARY KEY (co_uf, fk_Tb_Macro_co_macro),
+    UNIQUE (fk_Tb_Pais_co_pais, fk_Tb_Macro_co_macro, co_uf)
+);
+
+CREATE TABLE Tb_Munic (
+    fk_Tb_UF_fk_Tb_Macro_co_macro char(1),
+    fk_Tb_UF_co_uf char(1),
+    co_munic char(5),
+    no_munic varchar(150),
+    PRIMARY KEY (co_munic, fk_Tb_UF_co_uf, fk_Tb_UF_fk_Tb_Macro_co_macro)
+);
+
+CREATE TABLE Tb_CEP (
+    nu_cep CHAR(8) PRIMARY KEY
+);
+
+CREATE TABLE Tb_Logra (
+    co_logra INT PRIMARY KEY,
+    no_logr varchar(100)
+);
+
+CREATE TABLE Tb_DBanc (
+    co_dbanc INT PRIMARY KEY,
+    nu_oper varchar(3),
+    nu_conta varchar(9),
+    co_IBAN varchar(34),
+    fk_Tb_Agenci_co_agenc INT,
+    fk_Tb_TpOrc_co_tporc INT
+);
+
+CREATE TABLE Tb_Banco (
+    co_banc INT,
+    co_ispb char(8),
+    nu_banc char(3),
+    no_redu varchar(70),
+    st_conp boolean,
+    no_exten varchar(150),
+    dt_iniop date,
+    fk_Tb_Jurid_co_jurid INT,
+    fk_Tb_Jurid_fk_Tb_Pesso_co_pesso INT,
+    PRIMARY KEY (co_banc, fk_Tb_Jurid_co_jurid, fk_Tb_Jurid_fk_Tb_Pesso_co_pesso)
+);
+
+CREATE TABLE Tb_Agenci (
+    co_agenci INT PRIMARY KEY,
+    nu_agenci varchar(5),
+    no_agenci varchar(150),
+    fk_Tb_Banco_co_banco INT,
+    fk_Tb_Banco_fk_Tb_Jurid_co_jurid INT,
+    fk_Tb_Banco_fk_Tb_Jurid_fk_Tb_Pesso_co_pesso INT
+);
+
+CREATE TABLE Tb_TpOrc (
+    co_tporc INT PRIMARY KEY,
+    no_tporc varchar(50),
+    ds_tporc varchar(150)
+);
+
+CREATE TABLE Tb_GRela (
+    co_grela char(3) PRIMARY KEY,
+    no_grel varchar(50),
+    ds_grel varchar(200),
+    sg_grel varchar(3)
+);
+
+CREATE TABLE Tb_PProf (
+    co_pprof INT,
+    no_cargo varchar(70),
+    no_funca varchar(70),
+    vl_sliqu money,
+    dt_ingre date,
+    fk_Tb_Fisic_co_fisic INT,
+    fk_Tb_Fisic_fk_Tb_Pesso_co_pesso INT,
+    PRIMARY KEY (co_pprof, fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Tb_Pesso_co_pesso)
+);
+
+CREATE TABLE Tb_PPedu (
+    co_ppedu INT,
+    no_curso varchar(70),
+    dt_ingres date,
+    dt_concl date,
+    im_esc bit,
+    fk_Tb_Fisic_co_fisic INT,
+    fk_Tb_Fisic_fk_Tb_Pesso_co_pesso INT,
+    fk_Tb_NForm_co_nform INT,
+    PRIMARY KEY (co_ppedu, fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Tb_Pesso_co_pesso, fk_Tb_NForm_co_nform)
+);
+
+CREATE TABLE Tb_Categ (
+    co_categ INT PRIMARY KEY,
+    no_categ varchar(50),
+    ds_categ varchar(150)
+);
+
+CREATE TABLE Tb_NForm (
+    co_form INT PRIMARY KEY,
+    no_form varchar(70),
+    ds_form varchar(150)
+);
+
+CREATE TABLE Tb_DPess (
+    co_dpess INT PRIMARY KEY,
+    dt_nasc date,
+    co_Natur_2 char(1),
+    co_Natur_1 char(1),
+    co_Natur char(5),
+    no_mae varchar(150),
+    no_pai varchar(150),
+    nu_tit char(12) UNIQUE,
+    nu_zona char(3),
+    nu_sec char(4),
+    co_DEleit_2 char(1),
+    co_DEleit_1 char(1),
+    co_DEleit char(5),
+    nu_id varchar(70),
+    sg_emid varchar(20),
+    dt_emid date,
+    im_id bit
+);
+
+CREATE TABLE Tb_Hiera (
+    co_hiera INT PRIMARY KEY,
+    no_hiera varchar(70),
+    ds_hiera varchar(150)
+);
+
+CREATE TABLE Tb_Reuni (
+    co_reu INT PRIMARY KEY,
+    dt_reuni date,
+    hr_inici time,
+    hr_termi time,
+    im_atare bit,
+    co_pre_1 INT,
+    co_pre_2 INT,
+    co_sec_1 INT,
+    co_sec_2 INT
+);
+
+CREATE TABLE Tb_Remes (
+    co_rem INT PRIMARY KEY,
+    co_envio varchar(13) UNIQUE,
+    dt_env date,
+    dt_disp date,
+    dt_ret date,
+    co_opo_1 INT,
+    co_opo_2 INT,
+    co_opo_3 INT,
+    co_opd_1 INT,
+    co_opd_2 INT,
+    co_opd_3 INT,
+    co_fro_1 INT,
+    co_fro_2 INT,
+    co_frd_1 INT,
+    co_frd_2 INT,
+    fk_Tb_Comer_co_comer INT,
+    fk_Tb_Comer_fk_Tb_Jurid_co_jurid INT,
+    fk_Tb_Comer_fk_Tb_Jurid_fk_Tb_Pesso_co_pesso INT
+);
+
+CREATE TABLE Tb_CDMil (
+    co_cdmil INT PRIMARY KEY,
+    st_acert boolean,
+    fk_Rt_Distr_co_Rt_Distr INT
+);
+
+CREATE TABLE Tb_Publi (
+    co_publ INT,
+    no_publ varchar(70),
+    dt_publ date,
+    qt_pag int,
+    qt_tirag int,
+    vl_custo money,
+    vl_venda money,
+    fk_Tb_Produ_co_produ INT,
+    PRIMARY KEY (co_publ, fk_Tb_Produ_co_produ)
+);
+
+CREATE TABLE Tb_NSeri (
+    co_nser INT,
+    nu_isbn13 varchar(13),
+    nu_edic smallint,
+    fk_Tb_Publi_co_publi INT,
+    fk_Tb_Publi_fk_Tb_Produ_co_produ INT,
+    PRIMARY KEY (co_nser, fk_Tb_Publi_co_publi, fk_Tb_Publi_fk_Tb_Produ_co_produ)
+);
+
+CREATE TABLE Tb_Seria (
+    co_ser INT,
+    nu_issn char(7),
+    nu_ser smallint,
+    fk_Tb_Publi_co_publi INT,
+    fk_Tb_Publi_fk_Tb_Produ_co_produ INT,
+    PRIMARY KEY (co_ser, fk_Tb_Publi_co_publi, fk_Tb_Publi_fk_Tb_Produ_co_produ)
+);
+
+CREATE TABLE Tb_RSoci (
+    co_tprsoc INT PRIMARY KEY,
+    no_rsoci varchar(70)
+);
+
+CREATE TABLE Tb_Pais (
+    co_pais char(3) PRIMARY KEY,
+    no_pais varchar(70),
+    ds_notac varchar(250),
+    fk_Tb_RSNac_co_rsnac char(2)
+);
+
+CREATE TABLE Tb_Conti (
+    co_conti char(1) PRIMARY KEY,
+    no_conti varchar(70)
+);
+
+CREATE TABLE Tb_TpCap (
+    co_tpcap INT PRIMARY KEY,
+    no_tpcapa varchar(70),
+    ds_tpcapa varchar(170)
+);
+
+CREATE TABLE Tb_Forma (
+    co_forma INT PRIMARY KEY,
+    no_forma varchar(50),
+    ds_forma varchar(100)
+);
+
+CREATE TABLE Tb_Idiom (
+    co_idiom INT PRIMARY KEY,
+    no_idiom varchar(70),
+    fk_Tb_Pesso_co_pes INT,
+    fk_Tb_DBanc_co_dbanc INT,
+    PRIMARY KEY (fk_Tb_DBanc_co_dbanc, fk_Tb_Pesso_co_pes)
+);
+
+CREATE TABLE Tb_RSNac (
+    co_rsnac char(2) PRIMARY KEY,
+    no_rsnac varchar(70),
+    fk_Tb_Conti_co_conti char(1)
+);
+
+CREATE TABLE Tb_Mesor (
+    fk_Tb_UF_fk_Tb_Macro_co_macro char(1),
+    fk_Tb_UF_co_uf char(1),
+    co_mesor char(2),
+    no_mesor varchar(70),
+    PRIMARY KEY (fk_Tb_UF_fk_Tb_Macro_co_macro, fk_Tb_UF_co_uf, co_mesor)
+);
+
+CREATE TABLE Tb_Micro (
+    fk_Tb_UF_fk_Tb_Macro_co_macro char(1),
+    fk_Tb_UF_co_uf char(1),
+    co_micro char(3),
+    no_micro varchar(70),
+    PRIMARY KEY (co_micro, fk_Tb_UF_co_uf, fk_Tb_UF_fk_Tb_Macro_co_macro)
+);
+
+CREATE TABLE Tb_Campa (
+    co_campa Int PRIMARY KEY,
+    no_campa Varchar(30),
+    ds_campa varchar(250),
+    dt_inic date,
+    vl_durac interval,
+    vl_meta int
+);
+
+CREATE TABLE Rl_Tb_RCamp_Tb_Produ (
+    fk_Tb_RCamp_co_rcamp INT,
+    fk_Tb_Produ_co_produ INT,
+    qt_produ int,
+    PRIMARY KEY (fk_Tb_RCamp_co_rcamp, fk_Tb_Produ_co_produ)
+);
+ 
+ALTER TABLE Tb_Pesso ADD CONSTRAINT FK_Tb_Pesso_2
+    FOREIGN KEY (fk_Tb_Conta_co_cont)
+    REFERENCES Tb_Conta (co_conta);
+ 
+ALTER TABLE Tb_Fisic ADD CONSTRAINT FK_Tb_Fisic_2
+    FOREIGN KEY (fk_Pesso_co_pesso)
+    REFERENCES Tb_Pesso (co_pesso)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Tb_Fisic ADD CONSTRAINT FK_Tb_Fisic_3
+    FOREIGN KEY (fk_DPess_co_dpess)
+    REFERENCES Tb_DPess (co_dpess)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Tb_Fisic ADD CONSTRAINT FK_Tb_Fisic_4
+    FOREIGN KEY (fk_StPol_co_stpol)
+    REFERENCES Tb_StPol (co_stpol)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Tb_Jurid ADD CONSTRAINT FK_Tb_Jurid_2
+    FOREIGN KEY (fk_Pesso_co_pesso)
+    REFERENCES Tb_Pesso (co_pesso)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Tb_OPart ADD CONSTRAINT FK_Tb_OPart_2
+    FOREIGN KEY (fk_Tb_Jurid_co_jurid, fk_Tb_Jurid_fk_Pesso_co_pesso)
+    REFERENCES Tb_Jurid (co_jurid, fk_Pesso_co_pesso)
+    ON DELETE CASCADE;
+    FOREIGN KEY (co_frd_1, co_frd_2)
+    REFERENCES Tb_Fisic (co_fisic, fk_Pesso_co_pesso);
+ 
+ALTER TABLE Tb_Remes ADD CONSTRAINT FK_Tb_Remes_6
+    FOREIGN KEY (fk_Tb_Comer_co_comer, fk_Tb_Comer_fk_Tb_Jurid_co_jurid, fk_Tb_Comer_fk_Tb_Jurid_fk_Tb_Pesso_co_pesso)
+    REFERENCES Tb_Comer (co_comer, fk_Tb_Jurid_co_jurid, fk_Tb_Jurid_fk_Tb_Pesso_co_pesso)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Tb_CDMil ADD CONSTRAINT FK_Tb_CDMil_2
+    FOREIGN KEY (fk_Rt_Distr_co_Rt_Distr)
+    REFERENCES Rt_Distr (co_Rt_Distr);
+ 
+ALTER TABLE Tb_Publi ADD CONSTRAINT FK_Tb_Publi_2
+    FOREIGN KEY (fk_Tb_Produ_co_produ)
+    REFERENCES Tb_Produ (co_produ)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Tb_NSeri ADD CONSTRAINT FK_Tb_NSeri_2
+    FOREIGN KEY (fk_Tb_Publi_co_publi, fk_Tb_Publi_fk_Tb_Produ_co_produ)
+    REFERENCES Tb_Publi (co_publ, fk_Tb_Produ_co_produ)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Tb_Seria ADD CONSTRAINT FK_Tb_Seria_2
+    FOREIGN KEY (fk_Tb_Publi_co_publi, fk_Tb_Publi_fk_Tb_Produ_co_produ)
+    REFERENCES Tb_Publi (co_publ, fk_Tb_Produ_co_produ)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Tb_Pais ADD CONSTRAINT FK_Tb_Pais_2
+    FOREIGN KEY (fk_Tb_RSNac_co_rsnac)
+    REFERENCES Tb_RSNac (co_rsnac);
+ 
+ALTER TABLE Tb_CCota ADD CONSTRAINT FK_Tb_CCota_2
+    FOREIGN KEY (fk_Rt_CoMen_fk_Tb_PProf_co_pprof, fk_Rt_CoMen_fk_Tb_Fisic_co_fisic, fk_Rt_CoMen_fk_Tb_Fisic_fk_Tb_Pesso_co_pesso, fk_Rt_CoMen_fk_Tb_PProf_fk_Tb_Fisic_co_fisic, fk_Rt_CoMen_fk_Tb_PProf_fk_Tb_Fisic_fk_Tb_Pesso_co_pesso)
+    REFERENCES Rt_CoMen (fk_Tb_PProf_co_pprof, fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Tb_Pesso_co_pesso, fk_Tb_PProf_fk_Tb_Fisic_co_fisic, fk_Tb_PProf_fk_Tb_Fisic_fk_Tb_Pesso_co_pesso);
+ 
+ALTER TABLE Tb_Ccbp ADD CONSTRAINT FK_Tb_Ccbp_2
+    FOREIGN KEY (FK_Tb_Jurid_co_jurid, FK_Tb_Jurid_fk_Tb_Pesso_co_pesso)
+    REFERENCES Tb_Jurid (co_jurid, fk_Pesso_co_pesso)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Tb_RCamp ADD CONSTRAINT FK_Tb_RCamp_2
+    FOREIGN KEY (fk_Tipo_de_campanha_co_tpcamp)
+    REFERENCES Tb_TpCam (co_tpcamp)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Tb_RCamp ADD CONSTRAINT FK_Tb_RCamp_3
+    FOREIGN KEY (fk_Rt_CCamp_co_ccamp)
+    REFERENCES Rt_CCamp (co_ccamp);
+ 
+ALTER TABLE Tb_RCamp ADD CONSTRAINT FK_Tb_RCamp_4
+    FOREIGN KEY (fk_Tb_Campa_co_campa)
+    REFERENCES Tb_Campa (co_campa);
+ 
+ALTER TABLE Tb_RCamp ADD CONSTRAINT FK_Tb_RCamp_5
+    FOREIGN KEY (fk_Tb_FPaga_co_fpaga)
+    REFERENCES Tb_FPaga (co_fpaga);
+ 
+ALTER TABLE Tb_Produ ADD CONSTRAINT FK_Tb_Produ_2
+    FOREIGN KEY (fk_Tb_TpPro_co_tpprod)
+    REFERENCES Tb_TpPro (co_tpprod)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Tb_VEfet ADD CONSTRAINT FK_Tb_VEfet_2
+    FOREIGN KEY (fk_CCBP_co_ccbp, fk_CCBP_FK_Jurid_co_jurid, fk_CCBP_FK_Jurid_fk_Pesso_co_pesso)
+    REFERENCES Tb_Ccbp (co_ccbp, FK_Tb_Jurid_co_jurid, FK_Tb_Jurid_fk_Tb_Pesso_co_pesso)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Tb_VEfet ADD CONSTRAINT FK_Tb_VEfet_3
+    FOREIGN KEY (fk_Tb_RCamp_co_rcamp)
+    REFERENCES Tb_RCamp (co_rcamp);
+ 
+ALTER TABLE Tb_VEfet ADD CONSTRAINT FK_Tb_VEfet_4
+    FOREIGN KEY (fk_Tb_StPag_co_stpag)
+    REFERENCES Tb_StPag (co_stpag);
+ 
+ALTER TABLE Tb_Macro ADD CONSTRAINT FK_Tb_Macro_2
+    FOREIGN KEY (fk_Tb_Pais_co_pais)
+    REFERENCES Tb_Pais (co_pais);
+ 
+ALTER TABLE Tb_Vestu ADD CONSTRAINT FK_Tb_Vestu_2
+    FOREIGN KEY (fk_Tb_Produ_co_produ)
+    REFERENCES Tb_Produ (co_produ)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Rt_Distr ADD CONSTRAINT FK_Rt_Distr_1
+    FOREIGN KEY (fk_Tb_Remes_co_remes)
+    REFERENCES Tb_Remes (co_rem);
+ 
+ALTER TABLE Rt_Distr ADD CONSTRAINT FK_Rt_Distr_2
+    FOREIGN KEY (fk_Tb_Reuni_co_reuni)
+    REFERENCES Tb_Reuni (co_reu);
+ 
+ALTER TABLE Rt_Distr ADD CONSTRAINT FK_Rt_Distr_4
+    FOREIGN KEY (fk_Tb_Parti_fk_Tb_Fisic_co_fisic_1, fk_Tb_Parti_fk_Tb_Fisic_co_fisic_2, fk_Tb_Parti_fk_Tb_Fisic_co_fisic_3)
+    REFERENCES Tb_Parti (fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Tb_Pesso_co_pesso, fk_Tb_Reuni_co_reuni);
+ 
+ALTER TABLE Rt_CCamp ADD CONSTRAINT FK_Rt_CCamp_1
+    FOREIGN KEY (fk_Tb_Pesso_co_pesso)
+    REFERENCES Tb_Pesso (co_pesso);
+ 
+ALTER TABLE Rt_CCamp ADD CONSTRAINT FK_Rt_CCamp_2
+    FOREIGN KEY (fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Tb_Pesso_co_pesso)
+    REFERENCES Tb_Fisic (co_fisic, fk_Pesso_co_pesso);
+ 
+ALTER TABLE Rt_CoMen ADD CONSTRAINT FK_Rt_CoMen_1
+    FOREIGN KEY (fk_Tb_PProf_co_pprof, fk_Tb_PProf_fk_Tb_Fisic_co_fisic, fk_Tb_PProf_fk_Tb_Fisic_fk_Tb_Pesso_co_pesso)
+    REFERENCES Tb_PProf (co_pprof, fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Tb_Pesso_co_pesso);
+ 
+ALTER TABLE Rt_CoMen ADD CONSTRAINT FK_Rt_CoMen_2
+    FOREIGN KEY (fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Tb_Pesso_co_pesso)
+    REFERENCES Tb_Fisic (co_fisic, fk_Pesso_co_pesso);
+ 
+ALTER TABLE Tb_MResp ADD CONSTRAINT FK_Tb_MResp_1
+    FOREIGN KEY (co_mre_1, co_mre_2)
+    REFERENCES Tb_Fisic (co_fisic, fk_Pesso_co_pesso)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Tb_MResp ADD CONSTRAINT FK_Tb_MResp_2
+    FOREIGN KEY (co_mtu_1, co_mtu_2)
+    REFERENCES Tb_Fisic (co_fisic, fk_Pesso_co_pesso)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Rl_RRepr ADD CONSTRAINT FK_Rl_RRepr_1
+    FOREIGN KEY (fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Tb_Pesso_co_pesso)
+    REFERENCES Tb_Fisic (co_fisic, fk_Pesso_co_pesso)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Rl_RRepr ADD CONSTRAINT FK_Rl_RRepr_2
+    FOREIGN KEY (fk_Tb_Repre_co_repre)
+    REFERENCES Tb_Repre (co_repre)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_RFina ADD CONSTRAINT FK_Rl_RFina_1
+    FOREIGN KEY (fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Tb_Pesso_co_pesso)
+    REFERENCES Tb_Fisic (co_fisic, fk_Pesso_co_pesso)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Rl_RFina ADD CONSTRAINT FK_Rl_RFina_2
+    FOREIGN KEY (fk_Tb_Repre_co_repre)
+    REFERENCES Tb_Repre (co_repre)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_RSecr ADD CONSTRAINT FK_Rl_RSecr_1
+    FOREIGN KEY (fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Pesso_co_pesso)
+    REFERENCES Tb_Fisic (co_fisic, fk_Pesso_co_pesso)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Rl_RSecr ADD CONSTRAINT FK_Rl_RSecr_2
+    FOREIGN KEY (fk_Tb_Repre_co_repre)
+    REFERENCES Tb_Repre (co_repre)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_Conta_Tb_Email ADD CONSTRAINT FK_Rl_Tb_Conta_Tb_Email_1
+    FOREIGN KEY (fk_Tb_Conta_co_conta)
+    REFERENCES Tb_Conta (co_conta);
+ 
+ALTER TABLE Rl_Tb_Conta_Tb_Email ADD CONSTRAINT FK_Rl_Tb_Conta_Tb_Email_2
+    FOREIGN KEY (fk_Tb_Email_co_email)
+    REFERENCES Tb_Email (co_email);
+ 
+ALTER TABLE Rl_Tb_Conta_Tb_Ender ADD CONSTRAINT FK_Rl_Tb_Conta_Tb_Ender_1
+    FOREIGN KEY (fk_Tb_Ender_co_end)
+    REFERENCES Tb_Ender (co_ender);
+ 
+ALTER TABLE Rl_Tb_Conta_Tb_Ender ADD CONSTRAINT FK_Rl_Tb_Conta_Tb_Ender_2
+    FOREIGN KEY (fk_Tb_Conta_co_conta)
+    REFERENCES Tb_Conta (co_conta);
+ 
+ALTER TABLE Rl_Tb_Conta_Tb_Telef ADD CONSTRAINT FK_Rl_Tb_Conta_Tb_Telef_1
+    FOREIGN KEY (fk_Tb_Conta_co_conta)
+    REFERENCES Tb_Conta (co_conta);
+ 
+ALTER TABLE Rl_Tb_Conta_Tb_Telef ADD CONSTRAINT FK_Rl_Tb_Conta_Tb_Telef_3
+    FOREIGN KEY (fk_Tb_Telef_co_tel)
+    REFERENCES Tb_Telef (co_tel);
+ 
+ALTER TABLE Rl_Tb_OPart_Tb_Fisic ADD CONSTRAINT FK_Rl_Tb_OPart_Tb_Fisic_1
+    FOREIGN KEY (fk_Fisic_co_fisic, fk_Tb_Fisic_fk_Pesso_co_pesso)
+    REFERENCES Tb_Fisic (co_fisic, fk_Pesso_co_pesso)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_OPart_Tb_Fisic ADD CONSTRAINT FK_Rl_Tb_OPart_Tb_Fisic_2
+    FOREIGN KEY (fk_Tb_OPart_co_opart, fk_Tb_OPart_fk_Tb_Jurid_co_jurid, fk_Tb_OPart_fk_Tb_Jurid_fk_Pesso_co_pesso)
+    REFERENCES Tb_OPart (co_opart, fk_Tb_Jurid_co_jurid, fk_Tb_Jurid_fk_Pesso_co_pesso);
+ 
+ALTER TABLE Rl_Tb_Fisic_Tb_GRela ADD CONSTRAINT FK_Rl_Tb_Fisic_Tb_GRela_1
+    FOREIGN KEY (fk_Tb_GRela_co_grela)
+    REFERENCES Tb_GRela (co_grela)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Rl_Tb_Fisic_Tb_GRela ADD CONSTRAINT FK_Rl_Tb_Fisic_Tb_GRela_2
+    FOREIGN KEY (fk_Fisic_co_fisic, fk_Tb_Fisic_fk_Pesso_co_pesso)
+    REFERENCES Tb_Fisic (co_fisic, fk_Pesso_co_pesso)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_PProf_Tb_Jurid ADD CONSTRAINT FK_Rl_Tb_PProf_Tb_Jurid_1
+    FOREIGN KEY (fk_Tb_PProf_co_pprof, fk_Tb_PProf_fk_Tb_Fisic_co_fisic, fk_Tb_PProf_fk_Tb_Fisic_fk_Tb_Pesso_co_pesso)
+    REFERENCES Tb_PProf (co_pprof, fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Tb_Pesso_co_pesso)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_PProf_Tb_Jurid ADD CONSTRAINT FK_Rl_Tb_PProf_Tb_Jurid_2
+    FOREIGN KEY (fk_Tb_Jurid_co_jurid, fk_Tb_Jurid_fk_Tb_Pesso_co_pesso)
+    REFERENCES Tb_Jurid (co_jurid, fk_Pesso_co_pesso)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Estud ADD CONSTRAINT FK_Rl_Estud_1
+    FOREIGN KEY (fk_Tb_PEducac_co_peduc, fk_Tb_PEducac_fk_Tb_Fisic_co_fisic, fk_Tb_PEducac_fk_Tb_Fisic_fk_Tb_Pesso_co_pesso, fk_Tb_PEducac_fk_Tb_NForm_co_nform)
+    REFERENCES Tb_PPedu (co_ppedu, fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Tb_Pesso_co_pesso, fk_Tb_NForm_co_nform)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Estud ADD CONSTRAINT FK_Rl_Estud_2
+    FOREIGN KEY (fk_Tb_Juridic_co_jurid, fk_Tb_Jurid_fk_Pesso_co_pesso)
+    REFERENCES Tb_Jurid (co_jurid, fk_Pesso_co_pesso)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_CPPro ADD CONSTRAINT FK_Rl_CPPro_1
+    FOREIGN KEY (fk_Tb_PProf_co_pprof, fk_Tb_PProf_fk_Tb_Fisic_co_fisic, fk_Tb_PProf_fk_Tb_Fisic_fk_Tb_Pesso_co_pesso)
+    REFERENCES Tb_PProf (co_pprof, fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Tb_Pesso_co_pesso)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_CPPro ADD CONSTRAINT FK_Rl_CPPro_2
+    FOREIGN KEY (fk_Tb_Categ_co_categ)
+    REFERENCES Tb_Categ (co_categ)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Tb_OReun ADD CONSTRAINT FK_Tb_OReun_1
+    FOREIGN KEY (fk_Tb_OPart_fk_Tb_Juridic_fk_Pesso_co_pesso, fk_Tb_OPart__fk_Tb_Juridic_co_jurid, fk_Tb_OPart_co_opart)
+    REFERENCES Tb_OPart (fk_Tb_Jurid_fk_Pesso_co_pesso, fk_Tb_Jurid_co_jurid, co_opart)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Tb_OReun ADD CONSTRAINT FK_Tb_OReun_2
+    FOREIGN KEY (fk_Reuniao_co_reu)
+    REFERENCES Tb_Reuni (co_reu)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Tb_CMesa ADD CONSTRAINT FK_Tb_CMesa_1
+    FOREIGN KEY (fk_Tb_Reuni_co_reuni)
+    REFERENCES Tb_Reuni (co_reu)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Tb_CMesa ADD CONSTRAINT FK_Tb_CMesa_2
+    FOREIGN KEY (fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Tb_Pesso_co_pesso)
+    REFERENCES Tb_Fisic (co_fisic, fk_Pesso_co_pesso)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Tb_Parti ADD CONSTRAINT FK_Tb_Parti_1
+    FOREIGN KEY (fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Tb_Pesso_co_pesso)
+    REFERENCES Tb_Fisic (co_fisic, fk_Pesso_co_pesso)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Tb_Parti ADD CONSTRAINT FK_Tb_Parti_2
+    FOREIGN KEY (fk_Tb_Reuni_co_reuni)
+    REFERENCES Tb_Reuni (co_reu)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_Remes_Tb_Publi ADD CONSTRAINT FK_Rl_Tb_Remes_Tb_Publi_1
+    FOREIGN KEY (fk_Tb_Publi_co_publi, fk_Tb_Publi_fk_Tb_Produ_co_produ)
+    REFERENCES Tb_Publi (co_publ, fk_Tb_Produ_co_produ)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Rl_Tb_Remes_Tb_Publi ADD CONSTRAINT FK_Rl_Tb_Remes_Tb_Publi_2
+    FOREIGN KEY (fk_Tb_Remes_co_remes)
+    REFERENCES Tb_Remes (co_rem)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_Conta_Tb_RSoci ADD CONSTRAINT FK_Rl_Tb_Conta_Tb_RSoci_1
+    FOREIGN KEY (fk_Tb_RSoci_co_tprsoc)
+    REFERENCES Tb_RSoci (co_tprsoc);
+ 
+ALTER TABLE Rl_Tb_Conta_Tb_RSoci ADD CONSTRAINT FK_Rl_Tb_Conta_Tb_RSoci_2
+    FOREIGN KEY (fk_Tb_Conta_co_conta)
+    REFERENCES Tb_Conta (co_conta);
+ 
+ALTER TABLE Rl_Tb_Nser_Tb_TpCap ADD CONSTRAINT FK_Rl_Tb_Nser_Tb_TpCap_1
+    FOREIGN KEY (fk_Tb_TpCap_co_tpcap)
+    REFERENCES Tb_TpCap (co_tpcap)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Rl_Tb_Nser_Tb_TpCap ADD CONSTRAINT FK_Rl_Tb_Nser_Tb_TpCap_2
+    FOREIGN KEY (fk_Tb_NSeri_co_nser, fk_Tb_NSeri_fk_Tb_Publi_co_publi, fk_Tb_NSeri_fk_Publicacao_fk_Tb_Publi_fk_Tb_Produ_co_produ)
+    REFERENCES Tb_NSeri (co_nser, fk_Tb_Publi_co_publi, fk_Tb_Publi_fk_Tb_Produ_co_produ)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_Seria_Tb_Forma ADD CONSTRAINT FK_Rl_Tb_Seria_Tb_Forma_1
+    FOREIGN KEY (fk_Tb_Forma)
+    REFERENCES Tb_Forma (co_forma)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Rl_Tb_Seria_Tb_Forma ADD CONSTRAINT FK_Rl_Tb_Seria_Tb_Forma_2
+    FOREIGN KEY (fk_Tb_Seria_co_seria, fk_Tb_Seria_fk_Tb_Publi_co_publi, fk_Tb_Seria_fk_fk_Tb_Publi_fk_Tb_Produ_co_produ)
+    REFERENCES Tb_Seria (co_ser, fk_Tb_Publi_co_publi, fk_Tb_Publi_fk_Tb_Produ_co_produ)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_Publi_Tb_Idiom ADD CONSTRAINT FK_Rl_Tb_Publi_Tb_Idiom_1
+    FOREIGN KEY (fk_Idiomas_co_idiom)
+    REFERENCES Tb_Idiom (co_idiom)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Rl_Tb_Publi_Tb_Idiom ADD CONSTRAINT FK_Rl_Tb_Publi_Tb_Idiom_2
+    FOREIGN KEY (fk_Tb_Publi_co_publi, fk_Tb_Publi_fk_Tb_Produ_co_produ)
+    REFERENCES Tb_Publi (co_publ, fk_Tb_Produ_co_produ)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_Candi_Tb_Fisic ADD CONSTRAINT FK_Rl_Tb_Candi_Tb_Fisic_1
+    FOREIGN KEY (fk_Tb_Candi_co_candi, fk_Tb_Candi_fk_Tb_Jurid_co_jurid, fk_Tb_Candi_fk_Tb_Jurid_fk_Tb_Pesso_co_pesso)
+    REFERENCES Tb_Candi (co_cand, fk_Tb_Jurid_co_jurid, fk_Tb_Jurid_fk_Tb_Pesso_co_pesso)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_Candi_Tb_Fisic ADD CONSTRAINT FK_Rl_Tb_Candi_Tb_Fisic_2
+    FOREIGN KEY (fk_Tb_Fisic_co_fisic, fk_Tb_Fisic_fk_Tb_Pesso_co_pesso)
+    REFERENCES Tb_Fisic (co_fisic, fk_Pesso_co_pesso)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_Doac_Tb_Pesso ADD CONSTRAINT FK_Rl_Tb_Doac_Tb_Pesso_1
+    FOREIGN KEY (FK_Doacao_co_doac)
+    REFERENCES Tb_Doaca (co_doac)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_Doac_Tb_Pesso ADD CONSTRAINT FK_Rl_Tb_Doac_Tb_Pesso_2
+    FOREIGN KEY (FK_Pessoa_co_pes)
+    REFERENCES Tb_Pesso (co_pesso)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Tb_DTipo ADD CONSTRAINT FK_Tb_DTipo_1
+    FOREIGN KEY (fk_Doacao_co_doac)
+    REFERENCES Tb_Doaca (co_doac)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Tb_DTipo ADD CONSTRAINT FK_Tb_DTipo_2
+    FOREIGN KEY (fk_Tipo_de_doacao_co_cdoac)
+    REFERENCES Tb_TpDoa (co_cdoac)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_RCamp_Tb_Doaca ADD CONSTRAINT FK_Rl_Tb_RCamp_Tb_Doaca_1
+    FOREIGN KEY (fk_Doacao_co_doac)
+    REFERENCES Tb_Doaca (co_doac)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Rl_Tb_RCamp_Tb_Doaca ADD CONSTRAINT FK_Rl_Tb_RCamp_Tb_Doaca_2
+    FOREIGN KEY (fk_Resultado_da_campanha_co_camp)
+    REFERENCES Tb_RCamp (co_rcamp)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_RCamp_Tb_TpCon ADD CONSTRAINT FK_Rl_Tb_RCamp_Tb_TpCon_1
+    FOREIGN KEY (fk_Tb_TpCont_co_tpcont)
+    REFERENCES Tb_TpCon (co_tpcont)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_RCamp_Tb_TpCon ADD CONSTRAINT FK_Rl_Tb_RCamp_Tb_TpCon_2
+    FOREIGN KEY (fk_Tb_RCamp_co_rcamp)
+    REFERENCES Tb_RCamp (co_rcamp)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Rl_Tb_Pesso_Tb_DBanc ADD CONSTRAINT FK_Rl_Tb_Pesso_Tb_DBanc_1
+    FOREIGN KEY (fk_Tb_Pesso_co_pes)
+    REFERENCES Tb_Pesso (co_pesso);
+ 
+ALTER TABLE Rl_Tb_Pesso_Tb_DBanc ADD CONSTRAINT FK_Rl_Tb_Pesso_Tb_DBanc_2
+    FOREIGN KEY (fk_Tb_DBanc_co_dbanc)
+    REFERENCES Tb_DBanc (co_dbanc);
+ 
+ALTER TABLE Tb_RSNac ADD CONSTRAINT FK_Tb_RSNac_1
+    FOREIGN KEY (fk_Tb_Conti_co_conti)
+    REFERENCES Tb_Conti (co_conti);
+ 
+ALTER TABLE Tb_Mesor ADD CONSTRAINT FK_Tb_Mesor_1
+    FOREIGN KEY (fk_Tb_UF_fk_Tb_Macro_co_macro, fk_Tb_UF_co_uf)
+    REFERENCES Tb_UF (fk_Tb_Macro_co_macro, co_uf);
+ 
+ALTER TABLE Tb_Micro ADD CONSTRAINT FK_Tb_Micro_2
+    FOREIGN KEY (fk_Tb_UF_fk_Tb_Macro_co_macro, fk_Tb_UF_co_uf)
+    REFERENCES Tb_UF (fk_Tb_Macro_co_macro, co_uf);
+ 
+ALTER TABLE Rl_Tb_RCamp_Tb_Produ ADD CONSTRAINT FK_Rl_Tb_RCamp_Tb_Produ_1
+    FOREIGN KEY (fk_Tb_RCamp_co_rcamp)
+    REFERENCES Tb_RCamp (co_rcamp);
+ 
+ALTER TABLE Rl_Tb_RCamp_Tb_Produ ADD CONSTRAINT FK_Rl_Tb_RCamp_Tb_Produ_2
+    FOREIGN KEY (fk_Tb_Produ_co_produ)
+    REFERENCES Tb_Produ (co_produ);
+
+
+/* View para modelo relatório solicitado*/
+CREATE OR REPLACE VIEW "Relatório" AS
+SELECT tb_fisic.no_preno, tb_fisic.no_sobre, tb_rcamp.vl_rcamp, tb_stpag.no_stpag, tb_fpaga.no_fpaga, tb_vefet.dt_vefet, rt_ccamp.dt_ccamp
+FROM tb_vefet
+INNER JOIN tb_stpag
+ON tb_vefet.fk_Tb_StPag_co_stpag = tb_stpag.co_stpag
+
+INNER JOIN tb_rcamp
+ON tb_vefet.fk_tb_rcamp_co_rcamp = tb_rcamp.co_rcamp 
+	INNER JOIN Tb_FPaga
+	ON tb_rcamp.fk_tb_fpaga_co_fpaga = tb_fpaga.co_fpaga
+
+	INNER JOIN rt_ccamp
+	ON tb_rcamp.fk_rt_ccamp_co_ccamp = rt_ccamp.co_ccamp
+		INNER JOIN tb_fisic
+		ON rt_ccamp.fk_tb_fisic_co_fisic = tb_fisic.co_fisic

@@ -1,0 +1,43 @@
+/* Valores baseados no uso atual*/
+INSERT INTO Tb_StPag (co_stpag, no_stpag, ds_stpag)
+VALUES
+(1, 'Pendente', 'Pagamento ainda não realizado'),
+(2, 'Parcial, parcelas', 'Realizado o pagamento de parte das parcelas'),
+(3, 'Parcial, adiantamento', 'Realizado pagamento de sinal'),
+(4,'Pago','Totalmente Pago');
+
+INSERT INTO Tb_FPaga (co_fpaga, no_fpaga, ds_fpaga)
+VALUES
+(1, 'A vista, em especie', 'Pagamento realizado total em especie'),
+(2, 'A vista, transferencia bancaria', 'Pagamento realizado total via transferência bancaria'),
+(3, 'Cartão vencimento', 'Pagamento realizado via cartão de credito para o vencimento'),
+(4, 'Cartão parcelado 2x', 'Pagamento realizado via cartão de credito parcelado em duas vezes'),
+(5, 'Cartão parcelado 3x', 'Pagamento realizado via cartão de credito parcelado em três vezes');
+
+INSERT INTO Tb_StPol (co_stpol, no_stpol, ds_stpol)
+VALUES
+(1, 'Regular', 'Contanto desenvolvendo atividades normais ao seu grupo de relacionamento'),
+(2, 'Indefinido', 'Contato em situação indefinida'),
+(3, 'Ignorado', 'Contato em situação desconhecida'),
+(4, 'Parasita', 'Contato em relação parasitaria com o partido'),
+(5, 'Hostil a direção local', 'Contato em relação hostil com a direção imediata'),
+(6, 'Hostil ao partico', 'Contato em relação hostil ao partido como um todo'),
+(7, 'Converteu a outro partido', 'Contato converteu-se a outra organização partidária');
+
+INSERT INTO Tb_GRela (co_grela, no_grela, ds_grela, sg_grela)
+VALUES
+(1, 'militante pleno', 'trata-se do militante de pleno direito no partido que passou por todas as etapas da incorporação', 'G1'),
+(2, 'militante em período de experiência', 'militante que ainda está em período de experiência, ainda não leu todos os documentos e seu ingresso no partido e sua participação estão sujeitos à aprovação do Comitê Central Nacional.', 'G2'),
+(3, 'em processo de incorporação', 'Trata-se da pessoa que aceitou ser incorporada e está dando os primeiros passos para se tornar um militante. Ao contrário do G2, este ainda não está organizando em nenhum célula.', 'G3'),
+(4, 'imediato', 'É o contato que o partido aproximou e para se tornar um G3 falta apenas que um militante proponha sua incorporação.', 'G4A'),
+(5, 'em processo', 'Contato que o partido está aproximando para posteriormente alguém propor sua incorporação', 'G4B'),
+(6, 'iniciante', 'contato recém feito pelo partido com o potencial de se tornar militante', 'G4C'),
+(7, 'efetivo', 'Contribuinte regular do partido. Cotiza todo mês e tem sua cota de jornal (no mínimo 2 jornais).', 'G5A'),
+(8, 'em perspectiva', 'Contribuintes não regularizados pelo partido. Falta apenas oficializar a sua situação.', 'G5B'),
+(9, 'contribuinte', 'Contato próximo ao partido. Contribui financeiramente com as atividades do partido e com as campanhas financeiras diversas vezes, comparece com frequência.', 'G6A '),
+(10, 'simpatizante estável', 'Não contribui com o partido financeiramente porém apoia e defende o partido e comparece nas atividades.', 'G6B'),
+(11, 'Pessoas de interesse', 'Contato feito recentemente pelo partido. Pode ter sido feito em alguma atividade e está fazendo sua primeira aproximação do partido.', 'G6C'),
+(12, 'lista geral', 'Contatos que não são de outras organizações e não se encaixam em nenhuma das outras categorias.', 'G7'),
+(13, 'amigos do pco', 'Pessoas de outro partido que contribuem com o partido, que ajudam com algumas campanha das mais diversas maneiras. São mais próximos, ou definitivamente militam em outros partidos porém a política os aproximou de nós.', 'G8');
+
+

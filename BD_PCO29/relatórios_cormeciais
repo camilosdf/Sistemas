@@ -1,0 +1,134 @@
+/* Vendedores Por Período */
+
+/* Produtos Por Período */
+
+/* Clientes Por Período */
+
+/* Ticket Médio Vendedores ok */
+CREATE OR REPLACE VIEW "Ticket Médio Vendedores" AS
+SELECT
+    tb_fisic.co_fisic,
+	tb_fisic.no_preno,
+	tb_fisic.no_sobre,
+	to_char(
+    	AVG (regexp_replace(vl_rcamp::text, '[$,]', '', 'g')::numeric),
+        '99999999999999999D99'
+    ) AS media
+FROM
+    tb_rcamp
+INNER JOIN tb_vefet
+ON tb_vefet.fk_tb_rcamp_co_rcamp = tb_rcamp.co_rcamp 
+	
+	INNER JOIN rt_ccamp
+	ON tb_rcamp.fk_rt_ccamp_co_ccamp = rt_ccamp.co_ccamp
+		INNER JOIN tb_fisic
+		ON rt_ccamp.fk_tb_fisic_co_fisic = tb_fisic.co_fisic
+
+WHERE date_part('month', Rt_CCamp.dt_ccamp) = 7 And date_part('year', Rt_CCamp.dt_ccamp) = 2023
+
+GROUP BY
+    tb_fisic.co_fisic,
+	tb_fisic.no_preno,
+	tb_fisic.no_sobre
+ORDER BY
+	media DESC;
+
+/* Ticket Médio Produtos */
+CREATE OR REPLACE VIEW "Ticket Médio Vendedores" AS
+SELECT
+    Tb_Produ.co_produ,
+	Tb_Produ.no_prod,
+	to_char(
+    	AVG (regexp_replace(vl_rcamp::text, '[$,]', '', 'g')::numeric),
+        '99999999999999999D99'
+    ) AS media
+FROM
+    tb_rcamp
+
+INNER JOIN Rl_Tb_RCamp_Tb_Produ
+	ON Rl_Tb_RCamp_Tb_Produ.fk_Tb_RCamp_co_rcamp = rt_ccamp.co_ccamp
+		INNER JOIN Tb_Produ
+			ON Rl_Tb_RCamp_Tb_Produ.fk_Tb_Produ_co_produ = fk_Tb_Produ.co_produ
+
+		INNER JOIN tb_vefet
+			ON tb_vefet.fk_tb_rcamp_co_rcamp = tb_rcamp.co_rcamp 
+
+WHERE date_part('month', Rt_CCamp.dt_ccamp) = 7 And date_part('year', Rt_CCamp.dt_ccamp) = 2023
+
+GROUP BY
+    Tb_Produ.co_produ,
+	Tb_Produ.no_prod
+ORDER BY
+	media DESC;
+
+/* Ticket Médio Clientes */
+CREATE OR REPLACE VIEW "Ticket Médio Vendedores" AS
+SELECT
+    tb_fisic.co_fisic,
+	tb_fisic.no_preno,
+	tb_fisic.no_sobre,
+	to_char(
+    	AVG (regexp_replace(vl_rcamp::text, '[$,]', '', 'g')::numeric),
+        '99999999999999999D99'
+    ) AS media
+FROM
+    tb_rcamp
+INNER JOIN tb_vefet
+ON tb_vefet.fk_tb_rcamp_co_rcamp = tb_rcamp.co_rcamp 
+	
+	INNER JOIN rt_ccamp
+	ON tb_rcamp.fk_rt_ccamp_co_ccamp = rt_ccamp.co_ccamp
+		INNER JOIN tb_fisic
+		ON rt_ccamp.fk_tb_fisic_co_fisic = tb_fisic.co_fisic
+
+WHERE extract(month FROM data) = 7
+
+WHERE extract(year FROM data) = 2013 
+
+GROUP BY
+    tb_fisic.co_fisic,
+	tb_fisic.no_preno,
+	tb_fisic.no_sobre
+ORDER BY
+	media DESC;
+
+/* Ticket Médio Órgãos Partidários */
+
+/* Ticket Médio total de Vendas */
+
+/* Taxa de Crescimento Vendedores */
+
+/* Taxa de Crescimento Produtos */
+
+/* Taxa de Crescimento Clientes */
+
+/* Taxa de Crescimento Órgãos Partidários */
+
+/* Curva ABC Vendedores */
+
+/* Curva ABC Produtos */
+
+/* Curva ABC Clientes */
+
+/* Curva ABC Clientes */
+
+/* Segregação de Clientes Por Produtos */
+.
+/* View para modelo relatório faturamento */
+create ou replace view Faturamento AS
+SELECT tb_fisic.no_preno, tb_fisic.no_sobre, tb_rcamp.vl_rcamp, tb_stpag.no_stpag, tb_fpaga.no_fpaga, tb_vefet.dt_vefet, rt_ccamp.dt_ccamp
+FROM tb_vefet
+INNER JOIN tb_stpag
+ON tb_vefet.fk_Tb_StPag_co_stpag = tb_stpag.co_stpag
+
+INNER JOIN tb_rcamp
+ON tb_vefet.fk_tb_rcamp_co_rcamp = tb_rcamp.co_rcamp 
+	INNER JOIN Tb_FPaga
+	ON tb_rcamp.fk_tb_fpaga_co_fpaga = tb_fpaga.co_fpaga
+
+	INNER JOIN rt_ccamp
+	ON tb_rcamp.fk_rt_ccamp_co_ccamp = rt_ccamp.co_ccamp
+		INNER JOIN tb_fisic
+		ON rt_ccamp.fk_tb_fisic_co_fisic = tb_fisic.co_fisi
+/* View para modelo relatório faturamento */
+create ou replace view Clientes Por Período AS

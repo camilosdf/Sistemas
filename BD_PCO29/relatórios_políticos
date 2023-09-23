@@ -1,0 +1,24 @@
+Conferência das Células
+
+Assiduidades dos Militantes nas Reuniões
+
+Frequência das Reuniões
+
+algum relatório das campanhas, mas esse ainda não tenho fechado o formato.
+
+/* View para modelo relatório faturamento */
+create ou replace view Faturamento AS
+SELECT tb_fisic.no_preno, tb_fisic.no_sobre, tb_rcamp.vl_rcamp, tb_stpag.no_stpag, tb_fpaga.no_fpaga, tb_vefet.dt_vefet, rt_ccamp.dt_ccamp
+FROM tb_vefet
+INNER JOIN tb_stpag
+ON tb_vefet.fk_Tb_StPag_co_stpag = tb_stpag.co_stpag
+
+INNER JOIN tb_rcamp
+ON tb_vefet.fk_tb_rcamp_co_rcamp = tb_rcamp.co_rcamp 
+	INNER JOIN Tb_FPaga
+	ON tb_rcamp.fk_tb_fpaga_co_fpaga = tb_fpaga.co_fpaga
+
+	INNER JOIN rt_ccamp
+	ON tb_rcamp.fk_rt_ccamp_co_ccamp = rt_ccamp.co_ccamp
+		INNER JOIN tb_fisic
+		ON rt_ccamp.fk_tb_fisic_co_fisic = tb_fisic.co_fisi
